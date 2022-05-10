@@ -20,7 +20,6 @@ def execute_api_request(client_library_function, **kwargs):
   response = client_library_function(
     **kwargs
   ).execute()
-  print(response)
   return response
 
 def create_table(table, headers=None):
