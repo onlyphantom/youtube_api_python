@@ -5,28 +5,43 @@ from googleapiclient.discovery import build
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
+youtube = build("youtube", "v3", developerKey=API_KEY)
+
 def search_result(query):
     """
     Refer: https://googleapis.github.io/google-api-python-client/docs/dyn/youtube_v3.search.html
     """
-    query = build("youtube", "v3", developerKey=API_KEY).search().list(
+    request = youtube.search().list(
         part="snippet",
         q=query,
         maxResults=10,
     )
 
-    response = query.execute()
+    return request.execute()
 
 def channel_stats(channelID):
     """
     Refer to the documentation: https://googleapis.github.io/google-api-python-client/docs/dyn/youtube_v3.channels.html
     """
-    query = build("youtube", "v3", developerKey=API_KEY)
-    request = query.channels().list(
+    request = youtube.channels().list(
         part="statistics",
         id=channelID
     )
     return request.execute()
 
-response = channel_stats("UCzIxc8Vg53_ewaRIk3shBug")
-print(response)
+def comment_threads(channelID):
+    request = youtube.commentThreads().list(
+        part='id,replies,snippet',
+        videoId=channelID,
+    )
+    return request.execute()
+
+if __name__ == '__main__':
+    pyscriptVidId = 'Qo8dXyKXyME'
+    channelId = 'UCzIxc8Vg53_ewaRIk3shBug'
+
+    # response = search_result("pyscript")
+    # response = channel_stats(channelId) 
+    response = comment_threads(pyscriptVidId)
+
+    print(response)
