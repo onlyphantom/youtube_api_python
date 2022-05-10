@@ -41,7 +41,7 @@ if __name__ == '__main__':
     channelId = 'UCzIxc8Vg53_ewaRIk3shBug'
 
     # response = search_result("pyscript")
-    response = channel_stats(channelId) 
-    # response = comment_threads(pyscriptVidId)
+    # response = channel_stats(channelId) 
+    response = comment_threads(pyscriptVidId)
 
     print(response)
