@@ -1,6 +1,4 @@
 import os
-import csv
-from datetime import datetime as dt
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 
@@ -61,12 +59,49 @@ def comment_threads(channelID, to_csv=False):
     
     return comments_list
 
+
+def get_video_ids(channelId):
+    """
+    Refer to the documentation: https://googleapis.github.io/google-api-python-client/docs/dyn/youtube_v3.search.html
+    """
+    videoIds = []
+ 
+    request = youtube.search().list(
+        part="snippet",
+        channelId=channelId,
+        type="video",
+        maxResults=50,
+        order="date"
+    )
+
+    response = request.execute()
+    responseItems = response['items']
+
+    videoIds.extend([item['id']['videoId'] for item in responseItems if item['id'].get('videoId', None) != None])
+
+    # if there is nextPageToken, then keep calling the API
+    while response.get('nextPageToken', None):
+        request = youtube.search().list(
+            part="snippet",
+            channelId=channelId,
+        )
+        response = request.execute()
+        responseItems = response['items']
+
+        videoIds.extend([item['id']['videoId'] for item in responseItems if item['id'].get('videoId', None) != None])
+    
+    print(f"Finished fetching videoIds for {channelId}. {len(videoIds)} videos found.")
+
+    return videoIds
+
+
+
 if __name__ == '__main__':
     pyscriptVidId = 'Qo8dXyKXyME'
     channelId = 'UCzIxc8Vg53_ewaRIk3shBug'
 
     # response = search_result("pyscript")
-    # response = channel_stats(channelId) 
-    response = comment_threads(pyscriptVidId, to_csv=True)
+    response = channel_stats(channelId) 
+    # response = comment_threads(pyscriptVidId, to_csv=True)
 
-    # print(response)
+    print(response)
