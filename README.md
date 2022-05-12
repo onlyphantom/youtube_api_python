@@ -1,6 +1,6 @@
 ### YouTube API (Python)
-This is a repository hosting the code examples demonstrated in the tutorial on my youtube channel. The link will be updated when the video goes live - subscribe to my channel to know when it does:
-- [Samuel Chan | YouTube](https://www.youtube.com/samuelchan)
+This is a repository hosting the code examples demonstrated in the YouTube API tutorial on my youtube channel. 
+- [YouTube Analytics API tutorial | YouTube](https://youtu.be/rcE3iL0URhU)
 
 ### Usage
 There are two main Python scripts: `yt_auth.py` and `yt_public.py`. 
