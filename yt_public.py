@@ -128,9 +128,7 @@ def video_stats(youtube, videoIDs, channelID, to_csv=False):
         statistics['duration'] = response['items'][0]['contentDetails']['duration']
         statistics['thumbnail'] = snippet['thumbnails']['high']['url']
         statistics['channelId'] = channelID
-
-        if statistics.get('likeCount', None) == None:
-            statistics['likeCount'] = 0
+        statistics['likeCount'] = statistics.get('likeCount', 0)
 
         print(f"Fetched stats for {videoId}")
         stats_list.append(statistics)
@@ -200,51 +198,3 @@ def comment_threads(youtube, videoID, channelID=None, to_csv=False):
 if __name__ == '__main__':
     pyscriptVidId = 'Qo8dXyKXyME'
     channelId = 'UCzIxc8Vg53_ewaRIk3shBug'
-
-    channelIds = []
-    # with open('youtube.csv', 'r') as csvfile:
-    #     reader = csv.reader(csvfile)
-    #     next(reader)
-    #     for row in reader:
-    #         channelIds.append(row[2])
-
-    # channel_stats(youtube_2, channelIds, to_csv=True)
-
-    # videoDict = {}
-    # for idx in range(len(channelIds)):
-    #     if idx <= len(channelIds)/5:
-    #         youtube = youtube_1
-    #     elif idx <= len(channelIds)/5*2:
-    #         youtube = youtube_2
-    #     elif idx <= len(channelIds)/5*3:
-    #         youtube = youtube_3
-    #     elif idx <= len(channelIds)/5*4:
-    #         youtube = youtube_4
-    #     else:
-    #         youtube = youtube_5
-    #     videoIds = get_video_ids(youtube, channelIds[idx])
-    #     videoDict[channelIds[idx]] = videoIds
-    
-    import json
-    # with open('videoDict.json', 'w') as fp:
-    #     json.dump(videoDict, fp)
-
-    with open('videoDict.json', 'r') as fp:
-        videoDict = json.load(fp)
-
-    for channelId, videoIds in videoDict.items():
-        video_stats(youtube_3, videoIDs=videoIds, channelID=channelId, to_csv=True)
-
-    # for channelId, videoIds in videoDict.items():
-    #     for videoId in videoIds:
-    #         comment_threads(youtube_3, videoID=videoId, channelID=channelId, to_csv=True)
-
-    # with open('scrapedVideos.json', 'w') as fp:
-    #     json.dump(scraped_videos, fp)
-
-    # response = search_result("pyscript")
-    # response = channel_stats(youtube_2, channelId) 
-    # response = comment_threads(youtube_2, videoID='pnecPXlfR5U', to_csv=False)
-    # print(response)
-
-    #NOTES -> troublesome video (videoId: CqssnS_v1a4) -> no likecount, so I manually add 0 to it
