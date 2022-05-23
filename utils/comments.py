@@ -1,10 +1,11 @@
 import csv
 from datetime import datetime as dt
 
-comments = []
 today = dt.today().strftime('%d-%m-%Y')
+PATH = 'commentsFolder/'
 
 def process_comments(response_items, csv_output=False):
+    comments = []
 
     for res in response_items:
 
@@ -29,13 +30,19 @@ def process_comments(response_items, csv_output=False):
     return comments
 
 
-def make_csv(comments, channelID=None):
+def make_csv(comments, channelID=None, videoID=None):
+    # Handle 0 comments issue
+    if len(comments) == 0:
+        return
+
     header = comments[0].keys()
 
-    if channelID:
-        filename = f'comments_{channelID}_{today}.csv'
+    if channelID and videoID:
+        filename = f'{PATH}comments_{channelID}_{videoID}_{today}.csv'
+    elif channelID:
+        filename = f'{PATH}comments_{channelID}_{today}.csv'
     else:
-        filename = f'comments_{today}.csv'
+        filename = f'{PATH}comments_{today}.csv'
 
     with open(filename, 'w', encoding='utf8', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=header)
