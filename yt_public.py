@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
+from iteration_utilities import unique_everseen
 
 from utils.comments import process_comments, make_csv
 
@@ -51,7 +52,9 @@ def comment_threads(channelID, to_csv=False):
         )
         response = request.execute()
         comments_list.extend(process_comments(response['items']))
-    
+
+    comments_list = list(unique_everseen(comments_list))
+
     print(f"Finished fetching comments for {channelID}. {len(comments_list)} comments found.")
     
     if to_csv:
@@ -101,7 +104,7 @@ if __name__ == '__main__':
     channelId = 'UCzIxc8Vg53_ewaRIk3shBug'
 
     # response = search_result("pyscript")
-    response = channel_stats(channelId) 
+    response = channel_stats(channelId)
     # response = comment_threads(pyscriptVidId, to_csv=True)
 
     print(response)
