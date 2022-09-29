@@ -38,6 +38,6 @@ def make_csv(comments, channelID=None):
         filename = f'comments_{today}.csv'
 
     with open(filename, 'w', encoding='utf8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=header)
+        writer = csv.DictWriter(f, fieldnames=header, extrasaction='ignore')
         writer.writeheader()
         writer.writerows(comments)
