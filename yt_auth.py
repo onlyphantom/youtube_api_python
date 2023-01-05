@@ -13,7 +13,7 @@ CLIENT_SECRETS_FILE = 'client_secret_desktop_temp.json'
 
 def get_service():
   flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-  credentials = flow.run_console()
+  credentials = flow.run_local_server()
   return build(API_SERVICE_NAME, API_VERSION, credentials = credentials)
 
 def execute_api_request(client_library_function, **kwargs):
