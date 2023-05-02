@@ -32,13 +32,13 @@ def channel_stats(channelID):
     )
     return request.execute()
 
-def comment_threads(channelID, to_csv=False):
+def comment_threads(videoID, to_csv=False):
     
     comments_list = []
     
     request = youtube.commentThreads().list(
         part='id,replies,snippet',
-        videoId=channelID,
+        videoId=videoID,
     )
     response = request.execute()
     comments_list.extend(process_comments(response['items']))
@@ -47,7 +47,7 @@ def comment_threads(channelID, to_csv=False):
     while response.get('nextPageToken', None):
         request = youtube.commentThreads().list(
             part='id,replies,snippet',
-            videoId=channelID,
+            videoId=videoID,
             pageToken=response['nextPageToken']
         )
         response = request.execute()
@@ -55,10 +55,10 @@ def comment_threads(channelID, to_csv=False):
 
     comments_list = list(unique_everseen(comments_list))
 
-    print(f"Finished fetching comments for {channelID}. {len(comments_list)} comments found.")
+    print(f"Finished fetching comments for {videoID}. {len(comments_list)} comments found.")
     
     if to_csv:
-        make_csv(comments_list, channelID)
+        make_csv(comments_list, videoID)
     
     return comments_list
 
@@ -100,11 +100,16 @@ def get_video_ids(channelId):
 
 
 if __name__ == '__main__':
-    pyscriptVidId = 'Qo8dXyKXyME'
-    channelId = 'UCzIxc8Vg53_ewaRIk3shBug'
+    # to get a list of IDs from a channel
+    # ids = get_video_ids("UCws1b7urfxMnvjhUJxHjtuQ")
 
+    # to get results from search
     # response = search_result("pyscript")
-    response = channel_stats(channelId)
-    # response = comment_threads(pyscriptVidId, to_csv=True)
+
+    # get channel stats
+    # response = channel_stats(channelID='UCzIxc8Vg53_ewaRIk3shBug')
+
+    # get comments
+    response = comment_threads(videoID='Qo8dXyKXyME', to_csv=True)
 
     print(response)
